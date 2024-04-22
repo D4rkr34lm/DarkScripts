@@ -35,5 +35,5 @@ function TB.handleTbShieldPaste(pressed)
 end
 
 hotkey("v", TB.handleTbPaste)
-hotkey("ctrl", TB.handleTbShieldPaste)
+hotkey("ctrl+v", TB.handleTbShieldPaste)
 command("setTb", TB.handleSetTb)
