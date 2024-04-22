@@ -7,6 +7,7 @@ function TPS.handleStepSizeCommand(params)
     Core.send("StepSize is " .. Core.highlight(tostring(StepSize)))
   else
     Core.send("Set StepSize to " .. Core.highlight(params[1]))
+    StepSize = tonumber(params[1])
   end
 end
 
