@@ -13,7 +13,7 @@ end
 function TB.handleTbPaste(pressed)
   if pressed then
     if SelectedTb ~= nil then
-      exec("tb Testbloecke/" .. SelectedTb)
+      exec("tb Testbloecke/" .. SelectedTb .. " -e")
     elseif region.type() == 'wg' then
       exec("tb Testbloecke/tb -e")
     elseif region.type() == 'mwg' then
@@ -25,7 +25,7 @@ end
 function TB.handleTbShieldPaste(pressed)
   if pressed then
     if SelectedTb ~= nil then
-      exec("tb Testbloecke/" .. SelectedTb .. "s")
+      exec("tb Testbloecke/" .. SelectedTb .. "s -e")
     elseif region.type() == 'wg' then
       exec("tb Testbloecke/tbs")
     elseif region.type() == "mwg" then
