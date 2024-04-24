@@ -1,17 +1,17 @@
 Trail = {}
 
-TrailState = 0
+Trail.state = 0
 
 function Trail.handleTrailCycle(pressed)
   if pressed then
-    if TrailState == 0 then
-      TrailState = 1
+    if Trail.state == 0 then
+      Trail.state = 1
       exec("trail show")
-    elseif TrailState == 1 then
-      TrailState = 2
+    elseif Trail.state == 1 then
+      Trail.state = 2
       exec("trail show --explode --count")
-    elseif TrailState == 2 then
-      TrailState = 0
+    elseif Trail.state == 2 then
+      Trail.state = 0
       exec("trail hide")
     end
   end

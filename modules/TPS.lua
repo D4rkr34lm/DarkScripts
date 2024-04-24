@@ -1,19 +1,19 @@
 TPS = {}
 
-StepSize = 1
+TPS.stepSize = 1
 
 function TPS.handleStepSizeCommand(params)
   if params[1] == nil then
-    Core.send("StepSize is " .. Core.highlight(tostring(StepSize)))
+    Core.send("StepSize is " .. Core.highlight(tostring(TPS.stepSize)))
   else
     Core.send("Set StepSize to " .. Core.highlight(params[1]))
-    StepSize = tonumber(params[1])
+    TPS.stepSize = tonumber(params[1])
   end
 end
 
 function TPS.handleTickStep(pressed)
   if pressed then
-    exec("tick step " .. tostring(StepSize))
+    exec("tick step " .. tostring(TPS.stepSize))
   end
 end
 

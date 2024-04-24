@@ -1,8 +1,8 @@
 TB = {}
-SelectedTb = nil
+TB.name = nil
 
 function TB.handleSetTb(args)
-  SelectedTb = args[1]
+  TB.name = args[1]
   if args[1] == nil then
     Core.send("Now using default tb")
   else
@@ -12,8 +12,8 @@ end
 
 function TB.handleTbPaste(pressed)
   if pressed then
-    if SelectedTb ~= nil then
-      exec("tb Testbloecke/" .. SelectedTb .. " -e")
+    if TB.name ~= nil then
+      exec("tb Testbloecke/" .. TB.name .. " -e")
     elseif region.type() == 'wg' then
       exec("tb Testbloecke/tb -e")
     elseif region.type() == 'mwg' then
@@ -24,8 +24,8 @@ end
 
 function TB.handleTbShieldPaste(pressed)
   if pressed then
-    if SelectedTb ~= nil then
-      exec("tb Testbloecke/" .. SelectedTb .. "s -e")
+    if TB.name ~= nil then
+      exec("tb Testbloecke/" .. TB.name .. "s -e")
     elseif region.type() == 'wg' then
       exec("tb Testbloecke/tbs")
     elseif region.type() == "mwg" then
