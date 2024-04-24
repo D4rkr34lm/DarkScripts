@@ -5,7 +5,6 @@ PhaseChecker.startTime = -1
 PhaseChecker.running = false
 
 function PhaseChecker.startCheck()
-  PhaseChecker.startTime = server.ticks()
   PhaseChecker.running = true
 end
 
@@ -22,7 +21,7 @@ end
 
 function PhaseChecker.stopCheck()
   PhaseChecker.running = false
-  PhaseChecker.startTime = 0
+  PhaseChecker.startTime = -1
 
   local result = "Phases "
 
