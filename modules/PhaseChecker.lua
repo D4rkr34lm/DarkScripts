@@ -5,6 +5,7 @@ PhaseChecker.startTime = -1
 PhaseChecker.running = false
 
 function PhaseChecker.startCheck()
+  Scoreboard.phaseChecker("PhaseChecker: running")
   Core.send("Started PhaseChecker")
   PhaseChecker.running = true
 end
@@ -25,10 +26,12 @@ end
 
 function PhaseChecker.stopCheck()
   if PhaseChecker.running then
+    Scoreboard.phaseChecker()
     PhaseChecker.running = false
     PhaseChecker.startTime = -1
 
     local result = "Phases "
+
 
     for phase, count in pairs(PhaseChecker.phases) do
       result = result .. Core.highlight(tostring(phase)) .. "|" .. tostring(count) .. "  "

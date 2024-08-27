@@ -12,3 +12,5 @@ end
 function Core.highlight(text)
   return "&9" .. text .. "&7"
 end
+
+Core.init()
