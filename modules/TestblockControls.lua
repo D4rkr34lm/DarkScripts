@@ -57,8 +57,10 @@ function TestblockControls.swapTestblock(regionType)
   local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
   if blockConfigCount == selectedTestblockIndex then
     TestblockControls.selectedBlockConfig[regionType] = 1
+    return TestblockControls.selectedBlockConfig[regionType]
   else
     TestblockControls.selectedBlockConfig[regionType] = TestblockControls.selectedBlockConfig[regionType] + 1
+    return TestblockControls.selectedBlockConfig[regionType]
   end
 end
 
@@ -74,5 +76,8 @@ end))
 
 command("swapTb", function()
   local currentRegionType = region.type()
-  TestblockControls.swapTestblock(currentRegionType)
+  local nextTestblockIndex = TestblockControls.swapTestblock(currentRegionType)
+
+  Core.msg("Swapping testblock for " ..
+    Core.highlight(currentRegionType, Colors.aqua) .. " to " .. Core.highlight(tostring(nextTestblockIndex), Colors.aqua))
 end)
