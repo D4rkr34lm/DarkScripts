@@ -1,14 +1,6 @@
 Core = {}
 
-function HandlerFunction(func)
-  return function(pressed)
-    if pressed then
-      func()
-    end
-  end
-end
-
-Colors = {
+Core.colors = {
   black = "&0",
   darkBlue = "&1",
   darkGreen = "&2",
@@ -29,12 +21,12 @@ Colors = {
 
 ---@param text string
 function Core.msg(text)
-  print("&7[&8" .. "Dark" .. "&bScripts&7] &f" .. text)
+  print("&f[&8Dark&3Scripts&f]&7", text)
 end
 
----@param color string
+---@param color "black" | "darkBlue" | "darkGreen" | "darkAqua" | "darkRed" | "darkPurple" | "gold" | "gray" | "darkGrey" | "blue" | "green" | "aqua" | "red" | "lightPurple" | "yellow" | "white"
 ---@param text string
 ---@return string
 function Core.highlight(color, text)
-  return color .. text .. Colors.white
+  return Core.colors[color] .. text .. Core.colors.gray
 end

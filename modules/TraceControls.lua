@@ -2,7 +2,7 @@ TraceControls = {}
 
 TraceControls.traceShowConfigs = {
   "trace show",
-  "trace show -explode -count",
+  "trace show -explosion -count",
   "trace hide"
 }
 
@@ -24,5 +24,17 @@ function TraceControls.clearTraces()
   exec("trace clear")
 end
 
-hotkey("c", HandlerFunction(TraceControls.toggleTroughTraceShow))
-hotkey("ctrl+c", HandlerFunction(TraceControls.clearTraces))
+hotkey("c",
+  function(pressed)
+    if pressed then
+      TraceControls.toggleTroughTraceShow()
+    end
+  end
+)
+hotkey("ctrl+c",
+  function(pressed)
+    if pressed then
+      TraceControls.clearTraces()
+    end
+  end
+)

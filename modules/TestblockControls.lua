@@ -16,6 +16,10 @@ TestblockControls.blockConfigs = {
     {
       "Testbloecke/Mwg",
       "Testbloecke/Mwg_mit_Schild"
+    },
+    {
+      "Testbloecke/Mwg_mit_DragonEggs",
+      "Testbloecke/Mwg_mit_DragonEggs_und_Schild"
     }
   },
   ws = {
@@ -53,31 +57,36 @@ end
 
 ---@param regionType RegionType
 function TestblockControls.swapTestblock(regionType)
-  local blockConfigCount = length(TestblockControls.blockConfigs(regionType))
+  local blockConfigCount = length(TestblockControls.blockConfigs[regionType])
   local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
+
   if blockConfigCount == selectedTestblockIndex then
     TestblockControls.selectedBlockConfig[regionType] = 1
-    return TestblockControls.selectedBlockConfig[regionType]
   else
     TestblockControls.selectedBlockConfig[regionType] = TestblockControls.selectedBlockConfig[regionType] + 1
-    return TestblockControls.selectedBlockConfig[regionType]
   end
+
+  local newTestblockConfigIndex = TestblockControls.selectedBlockConfig[regionType]
+  local newTestblockConfig = TestblockControls.blockConfigs[regionType][newTestblockConfigIndex]
+  Core.msg("Swapping testblock for " ..
+    Core.highlight("aqua", regionType) .. " to " .. Core.highlight("aqua", table.concat(newTestblockConfig, " | ")))
 end
 
-hotkey("v", HandlerFunction(function()
-  local currentRegionType = region.type()
-  TestblockControls.pasteTestblock(currentRegionType)
-end))
+hotkey("v", function(pressed)
+  if pressed then
+    local currentRegionType = region.type()
+    TestblockControls.pasteTestblock(currentRegionType)
+  end
+end)
 
-hotkey("ctrl+v", HandlerFunction(function()
-  local currentRegionType = region.type()
-  TestblockControls.pasteShieldTestblock(currentRegionType)
-end))
+hotkey("ctrl+v", function(pressed)
+  if pressed then
+    local currentRegionType = region.type()
+    TestblockControls.pasteShieldTestblock(currentRegionType)
+  end
+end)
 
 command("swapTb", function()
   local currentRegionType = region.type()
-  local nextTestblockIndex = TestblockControls.swapTestblock(currentRegionType)
-
-  Core.msg("Swapping testblock for " ..
-    Core.highlight(currentRegionType, Colors.aqua) .. " to " .. Core.highlight(tostring(nextTestblockIndex), Colors.aqua))
+  TestblockControls.swapTestblock(currentRegionType)
 end)

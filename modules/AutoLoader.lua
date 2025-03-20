@@ -9,33 +9,33 @@ AutoLoader.tntPositions = {}
 function AutoLoader.startRecording()
   if AutoLoader.state == "empty" then
     AutoLoader.state = "recording"
-    Core.msg("Started " .. Core.highlight("AutoLoader", Colors.aqua) .. " recording")
+    Core.msg("Started " .. Core.highlight("aqua", "AutoLoader") .. " recording")
   else
     Core.msg("There is already a " ..
-      Core.highlight("AutoLoader", Colors.aqua) " setup. Clear it to start a new recording")
+      Core.highlight("aqua", "AutoLoader") " setup. Clear it to start a new recording")
   end
 end
 
 function AutoLoader.stopRecording()
   if AutoLoader.state == "recording" then
     AutoLoader.state = "setup"
-    Core.msg("Finished " .. Core.highlight("AutoLoader", Colors.aqua) .. " recording")
+    Core.msg("Finished " .. Core.highlight("aqua", "AutoLoader") .. " recording")
   else
     Core.msg("There is no active " ..
-      Core.highlight("AutoLoader", Colors.aqua) .. " recording")
+      Core.highlight("aqua", "AutoLoader") .. " recording")
   end
 end
 
 function AutoLoader.performLoadSequence()
   if AutoLoader.state == "setup" then
-    Core.msg("Finished " .. Core.highlight("AutoLoader", Colors.aqua) .. " recording")
+    Core.msg("Finished " .. Core.highlight("aqua", "AutoLoader") .. " recording")
 
     for position in AutoLoader.tntPositions do
       server.setBlockAt(position, "TNT")
     end
   else
     Core.msg("There is no setup " ..
-      Core.highlight("AutoLoader", Colors.aqua))
+      Core.highlight("aqua", "AutoLoader"))
   end
 end
 
@@ -64,14 +64,21 @@ event(events.BreakBlock, function(event)
   end
 end)
 
-hotkey("f", HandlerFunction(function()
-  if AutoLoader.state == "empty" then
-    AutoLoader.startRecording()
-  elseif AutoLoader.state == "recording" then
-    AutoLoader.stopRecording()
-  else
-    AutoLoader.performLoadSequence()
+hotkey("f", function(pressed)
+  if pressed then
+    if AutoLoader.state == "empty" then
+      AutoLoader.startRecording()
+    elseif AutoLoader.state == "recording" then
+      AutoLoader.stopRecording()
+    else
+      AutoLoader.performLoadSequence()
+    end
   end
-end))
+end
+)
 
-hotkey("ctrl+f", HandlerFunction(AutoLoader.clear))
+hotkey("ctrl+f", function(pressed)
+  if pressed then
+    AutoLoader.clear()
+  end
+end)
