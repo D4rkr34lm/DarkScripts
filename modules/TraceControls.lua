@@ -19,3 +19,10 @@ function TraceControls.toggleTroughTraceShow()
     TraceControls.currentSelectedTraceShowState = TraceControls.currentSelectedTraceShowState + 1
   end
 end
+
+function TraceControls.clearTraces()
+  exec("trace clear")
+end
+
+hotkey("c", HandlerFunction(TraceControls.toggleTroughTraceShow))
+hotkey("ctrl+c", HandlerFunction(TraceControls.clearTraces))

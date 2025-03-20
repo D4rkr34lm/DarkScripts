@@ -61,3 +61,18 @@ function TestblockControls.swapTestblock(regionType)
     TestblockControls.selectedBlockConfig[regionType] = TestblockControls.selectedBlockConfig[regionType] + 1
   end
 end
+
+hotkey("v", HandlerFunction(function()
+  local currentRegionType = region.type()
+  TestblockControls.pasteTestblock(currentRegionType)
+end))
+
+hotkey("ctrl+v", HandlerFunction(function()
+  local currentRegionType = region.type()
+  TestblockControls.pasteShieldTestblock(currentRegionType)
+end))
+
+command("swapTb", function()
+  local currentRegionType = region.type()
+  TestblockControls.swapTestblock(currentRegionType)
+end)
