@@ -7,60 +7,31 @@ AutoLoader.state = "empty"
 AutoLoader.tntPositions = {}
 
 function AutoLoader.startRecording()
-  if AutoLoader.state == "empty" then
-    AutoLoader.state = "recording"
-    Core.msg("Started " .. Core.highlight("aqua", "AutoLoader") .. " recording")
-  else
-    Core.msg("There is already a " ..
-      Core.highlight("aqua", "AutoLoader") " setup. Clear it to start a new recording")
-  end
+  AutoLoader.state = "recording"
+  Core.msg("Started " .. Core.highlight("aqua", "AutoLoader") .. " recording")
 end
 
 function AutoLoader.stopRecording()
-  if AutoLoader.state == "recording" then
-    AutoLoader.state = "setup"
-    Core.msg("Finished " .. Core.highlight("aqua", "AutoLoader") .. " recording")
-  else
-    Core.msg("There is no active " ..
-      Core.highlight("aqua", "AutoLoader") .. " recording")
-  end
+  AutoLoader.state = "setup"
+  Core.msg("Finished " .. Core.highlight("aqua", "AutoLoader") .. " recording")
 end
 
 function AutoLoader.performLoadSequence()
-  if AutoLoader.state == "setup" then
-    Core.msg("Finished " .. Core.highlight("aqua", "AutoLoader") .. " recording")
-
-    for position in AutoLoader.tntPositions do
-      server.setBlockAt(position, "TNT")
-    end
-  else
-    Core.msg("There is no setup " ..
-      Core.highlight("aqua", "AutoLoader"))
+  Core.msg("Executing " .. Core.highlight("aqua", "AutoLoader") .. " sequence")
+  for _, position in ipairs(AutoLoader.tntPositions) do
+    server.setBlockAt(position, "TNT")
   end
 end
 
 function AutoLoader.clear()
   AutoLoader.tntPositions = {}
+  AutoLoader.state = "empty"
+  Core.msg("Cleared " .. Core.highlight("aqua", "AutoLoader"))
 end
 
 event(events.PlaceBlock, function(event)
-  if AutoLoader.state == "recording" & event.type == "TNT" then
-    table.insert(AutoLoader.tntPositions, { x = event.x, y = event.y, z = event.z })
-  end
-end)
-
-event(events.BreakBlock, function(event)
-  if AutoLoader.state == "recording" & event.type == "TNT" then
-    local removeIndex = -1;
-    for index, position in AutoLoader.tntPositions do
-      if position.x == event.x & position.y == event.y & position.z == event.z then
-        removeIndex = index
-      end
-    end
-
-    if removeIndex ~= -1 then
-      table.remove(AutoLoader.tntPositions, removeIndex)
-    end
+  if AutoLoader.state == "recording" and event.type == "TNT" then
+    table.insert(AutoLoader.tntPositions, pos(event.x, event.y, event.z))
   end
 end)
 
@@ -74,8 +45,7 @@ hotkey("f", function(pressed)
       AutoLoader.performLoadSequence()
     end
   end
-end
-)
+end)
 
 hotkey("ctrl+f", function(pressed)
   if pressed then
