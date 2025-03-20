@@ -239,6 +239,12 @@ function server.time() return nil end
 function server.ticks() return nil end
 
 ---@param position Position
+---@param material string
+function server.setBlockAt(position, material)
+  return nil
+end
+
+---@param position Position
 ---@return string
 function getBlockAt(position) return nil end
 
