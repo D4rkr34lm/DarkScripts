@@ -70,5 +70,11 @@ command("cqa", function(args)
     ReliabilityTester.run()
   elseif arg == "result" then
     ReliabilityTester.printResult()
+  elseif arg == "count" then
+    local newShotCount = args[2]
+    Core.msg(Core.highlight("aqua", "ReliabilityTester") ..
+      " shot count is now " .. Core.highlight("aqua", tostring(newShotCount)))
+
+    ReliabilityTester.shotsRequiredForTest = newShotCount
   end
 end)
