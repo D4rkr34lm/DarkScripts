@@ -24,14 +24,23 @@ function AutoLoader.performLoadSequence()
 end
 
 function AutoLoader.clear()
-  AutoLoader.tntPositions = {}
-  AutoLoader.state = "empty"
-  Core.msg("Cleared " .. Core.highlight("aqua", "AutoLoader"))
+  if AutoLoader.state == "empty" then
+    Core.msg(Core.highlight("aqua", "AutoLoader") .. " is empty")
+  else
+    AutoLoader.tntPositions = {}
+    AutoLoader.state = "empty"
+    Core.msg("Cleared " .. Core.highlight("aqua", "AutoLoader"))
+  end
 end
 
 event(events.PlaceBlock, function(event)
   if AutoLoader.state == "recording" and event.type == "TNT" then
     table.insert(AutoLoader.tntPositions, pos(event.x, event.y, event.z))
+    Core.msg(Core.highlight("aqua", "AutoLoader") ..
+      " recorded TNT placed at " ..
+      "{" ..
+      Core.highlight("aqua", tostring(event.x)) ..
+      "," .. Core.highlight("aqua", tostring(event.y)) .. "," .. Core.highlight("aqua", tostring(event.z)) .. "}")
   end
 end)
 
