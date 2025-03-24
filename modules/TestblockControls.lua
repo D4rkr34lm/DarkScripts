@@ -1,90 +1,89 @@
-TestblockControls = {}
-
----@type {[RegionType]: {[number]: {[number]: string}}}
-TestblockControls.blockConfigs = {
-  wg = {
-    {
-      "Testbloecke/Wg",
-      "Testbloecke/Wg_mit_Schild"
+TestblockControls = {
+  ---@type {[RegionType]: {[number]: {[number]: string}}}
+  regionBlockConfigs = {
+    wg = {
+      {
+        "Testbloecke/Wg",
+        "Testbloecke/Wg_mit_Schild"
+      },
+      {
+        "Testbloecke/Wg",
+        "Testbloecke/Wg_mit_12er_Schild"
+      }
     },
-    {
-      "Testbloecke/Wg",
-      "Testbloecke/Wg_mit_12er_Schild"
+    mwg = {
+      {
+        "Testbloecke/Mwg",
+        "Testbloecke/Mwg_mit_Schild"
+      },
+      {
+        "Testbloecke/Mwg_mit_DragonEggs",
+        "Testbloecke/Mwg_mit_DragonEggs_und_Schild"
+      }
+    },
+    ws = {
+      {
+        "Testbloecke/Ws",
+        "Testbloecke/Ws_mit_Schild"
+      }
     }
   },
-  mwg = {
-    {
-      "Testbloecke/Mwg",
-      "Testbloecke/Mwg_mit_Schild"
-    },
-    {
-      "Testbloecke/Mwg_mit_DragonEggs",
-      "Testbloecke/Mwg_mit_DragonEggs_und_Schild"
-    }
+
+  ---@type {[RegionType]: number}
+  selectedBlockConfig = {
+    wg = 1,
+    mwg = 1,
+    ws = 1,
   },
-  ws = {
-    {
-      "Testbloecke/Ws",
-      "Testbloecke/Ws_mit_Schild"
-    }
-  }
-}
 
----@type {[RegionType]: number}
-TestblockControls.selectedBlockConfig = {
-  wg = 1,
-  mwg = 1,
-  ws = 1,
-}
+  ---@param regionType RegionType
+  pasteTestblock = function(regionType)
+    local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
+    local regionTestblockConf = TestblockControls.regionBlockConfigs[regionType][selectedTestblockIndex]
+    local testblockToPaste = regionTestblockConf[1];
 
----@param regionType RegionType
-function TestblockControls.pasteTestblock(regionType)
-  local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
-  local regionTestblockConf = TestblockControls.blockConfigs[regionType][selectedTestblockIndex]
-  local testblockToPaste = regionTestblockConf[1];
+    exec("tb " .. testblockToPaste .. " -e")
+  end,
 
-  exec("tb " .. testblockToPaste .. " -e")
-end
+  ---@param regionType RegionType
+  pasteExtensionTestblock = function(regionType)
+    local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
+    local regionTestblockConf = TestblockControls.regionBlockConfigs[regionType][selectedTestblockIndex]
+    local testblockToPaste = regionTestblockConf[2];
 
----@param regionType RegionType
-function TestblockControls.pasteShieldTestblock(regionType)
-  local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
-  local regionTestblockConf = TestblockControls.blockConfigs[regionType][selectedTestblockIndex]
-  local testblockToPaste = regionTestblockConf[2];
+    exec("tb " .. testblockToPaste .. " -e")
+  end,
 
-  exec("tb " .. testblockToPaste .. " -e")
-end
+  ---@param regionType RegionType
+  swapTestblock = function(regionType)
+    local blockConfigCount = length(TestblockControls.regionBlockConfigs[regionType])
+    local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
 
----@param regionType RegionType
-function TestblockControls.swapTestblock(regionType)
-  local blockConfigCount = length(TestblockControls.blockConfigs[regionType])
-  local selectedTestblockIndex = TestblockControls.selectedBlockConfig[regionType]
+    local newTestblockConfigIndex = (selectedTestblockIndex + 1) % blockConfigCount
+    local newTestblockConfig = TestblockControls.regionBlockConfigs[regionType][newTestblockConfigIndex]
 
-  if blockConfigCount == selectedTestblockIndex then
-    TestblockControls.selectedBlockConfig[regionType] = 1
-  else
-    TestblockControls.selectedBlockConfig[regionType] = TestblockControls.selectedBlockConfig[regionType] + 1
+    TestblockControls.selectedBlockConfig[regionType] = newTestblockConfigIndex
+
+
+    Core.msg("Swapping testblock for " ..
+      Core.highlight("aqua", regionType) .. " to " .. Core.highlight("aqua", table.concat(newTestblockConfig, " | ")))
   end
+}
 
-  local newTestblockConfigIndex = TestblockControls.selectedBlockConfig[regionType]
-  local newTestblockConfig = TestblockControls.blockConfigs[regionType][newTestblockConfigIndex]
-  Core.msg("Swapping testblock for " ..
-    Core.highlight("aqua", regionType) .. " to " .. Core.highlight("aqua", table.concat(newTestblockConfig, " | ")))
-end
-
-hotkey("v", function(pressed)
+local function pasteTestblock_hotkey(pressed)
   if pressed then
     local currentRegionType = region.type()
     TestblockControls.pasteTestblock(currentRegionType)
   end
-end)
+end
 
-hotkey("ctrl+v", function(pressed)
-  if pressed then
-    local currentRegionType = region.type()
-    TestblockControls.pasteShieldTestblock(currentRegionType)
-  end
-end)
+local function pasteExtensionTestblock()
+  local currentRegionType = region.type()
+  TestblockControls.pasteExtensionTestblock(currentRegionType)
+end
+
+hotkey("v", pasteTestblock_hotkey)
+hotkey("ctrl+v", pasteExtensionTestblock)
 
 command("swapTb", function()
   local currentRegionType = region.type()

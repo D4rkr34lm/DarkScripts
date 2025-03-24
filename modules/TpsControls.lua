@@ -1,24 +1,35 @@
-TpsControls = {}
+TpsControls = {
+  stepSize = 1,
+  baseTps = 20,
+  fastTps = 300,
 
-TpsControls.stepSize = 1;
+  step = function()
+    exec("tick step " .. tostring(TpsControls.stepSize))
+  end,
 
-function TpsControls.step()
-  exec("tick step " .. tostring(TpsControls.stepSize))
+  toggleThroughTps = function()
+    local currentTps = server.tps.limit()
+
+    if currentTps ~= TpsControls.baseTps then
+      exec("tpslimit " .. TpsControls.baseTps)
+    else
+      exec("tpslimit " .. TpsControls.fastTps)
+    end
+  end
+}
+
+local function tickStep_hotkey(pressed)
+  if pressed then
+    TpsControls.step()
+  end
 end
 
-function TpsControls.unfreeze()
-  exec("tpslimit 20")
+local function toggleThroughTps_hotkey(pressed)
+  if pressed then
+    TpsControls.unfreeze()
+  end
 end
 
-hotkey("x",
-  function(pressed)
-    if pressed then
-      TpsControls.step()
-    end
-  end)
-hotkey("ctrl+x",
-  function(pressed)
-    if pressed then
-      TpsControls.unfreeze()
-    end
-  end)
+
+hotkey("x", tickStep_hotkey)
+hotkey("ctrl+x", toggleThroughTps_hotkey)
