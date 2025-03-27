@@ -27,13 +27,22 @@ TLS = {
 
   printResult = function()
     local headers = { "Tick", "TNTs" }
-    local rows = {}
 
+    local rows = {}
     for key, value in pairs(TLS.recording.spawnsCounters) do
       table.insert(rows, { key, tostring(value) })
     end
 
-    Core.printTable(headers, rows)
+    table.sort(rows, function(a, b)
+      return tonumber(a[1]) < tonumber(b[1])
+    end)
+
+    local stringRows = {}
+    for _, value in ipairs(rows) do
+      table.insert(stringRows, value)
+    end
+
+    Core.printTable(headers, stringRows)
   end
 }
 
@@ -48,7 +57,6 @@ end)
 event(events.TNTExplode, function()
   if TLS.state == "running" then
     TLS.stopRecording()
+    TLS.printResult()
   end
-
-  TLS.printResult()
 end)
