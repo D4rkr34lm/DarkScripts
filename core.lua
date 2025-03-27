@@ -30,3 +30,34 @@ end
 function Core.highlight(color, text)
 	return Core.colors[color] .. text .. Core.colors.gray
 end
+
+function Core.fillString(string, len)
+	local currentString = string
+
+	while string.len(currentString) < len do
+		currentString = currentString .. " "
+	end
+end
+
+function Core.printTable(headers, rows)
+	local divider = Core.highlight("darkGrey", " | ")
+
+	local rowsStrings = { table.concat(headers, divider) }
+	local filledRows = {}
+
+	for _, row in ipairs(rows) do
+		local filledRow = {}
+		for idx, element in ipairs(row) do
+			table.insert(filledRow, Core.fillString(element, idx))
+		end
+		table.insert(filledRows, filledRow)
+	end
+
+	for _, row in ipairs(filledRows) do
+		table.insert(rowsStrings, table.concat(row, divider))
+	end
+
+	for _, row in ipairs(filledRows) do
+		Core.msg(row)
+	end
+end
