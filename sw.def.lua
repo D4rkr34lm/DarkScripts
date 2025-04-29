@@ -245,6 +245,11 @@ function server.setBlockAt(position, material)
 end
 
 ---@param position Position
+function server.interactAt(position)
+  return nil
+end
+
+---@param position Position
 ---@return string
 function getBlockAt(position) return nil end
 

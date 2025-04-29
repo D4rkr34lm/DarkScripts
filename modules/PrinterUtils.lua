@@ -59,7 +59,7 @@ PrinterUtils = {
     elseif event.type == PrinterUtils.consumerBlockMaterial then
       for index, value in pairs(PrinterUtils.spawnerBlocks) do
         if Pos.equals(value.position, position) then
-          table.remove(PrinterUtils.spawnerBlocks, index)
+          table.remove(PrinterUtils.consumerBlocks, index)
 
           Core.msg(Core.highlight("aqua", "PrinterUtils") ..
             " removed " .. Core.highlight("darkGrey", "consumer") .. " at " .. "{" ..

@@ -12,5 +12,12 @@ Pos = {
   ---@return Position
   new = function(x, y, z)
     return { x = x, y = y, z = z }
+  end,
+
+  ---@param pos Position
+  ---@return string
+  toString = function(pos)
+    return Core.highlight("aqua", tostring(pos.x)) ..
+        "," .. Core.highlight("aqua", tostring(pos.y)) .. "," .. Core.highlight("aqua", tostring(pos.z)) .. "}"
   end
 }

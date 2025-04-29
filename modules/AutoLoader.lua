@@ -3,6 +3,9 @@ AutoLoader = {}
 ---@type "empty" | "recording" | "setup"
 AutoLoader.state = "empty"
 
+---@type Position
+AutoLoader.triggerPosition = nil
+
 ---@type {[number]: Position}
 AutoLoader.tntPositions = {}
 
@@ -21,6 +24,10 @@ function AutoLoader.performLoadSequence()
   for _, position in ipairs(AutoLoader.tntPositions) do
     server.setBlockAt(position, "TNT")
   end
+
+  if not (AutoLoader.triggerPosition == nil) then
+    server.interactAt(AutoLoader.triggerPosition)
+  end
 end
 
 function AutoLoader.clear()
@@ -28,6 +35,7 @@ function AutoLoader.clear()
     Core.msg(Core.highlight("aqua", "AutoLoader") .. " is empty")
   else
     AutoLoader.tntPositions = {}
+    AutoLoader.triggerPosition = nil
     AutoLoader.state = "empty"
     Core.msg("Cleared " .. Core.highlight("aqua", "AutoLoader"))
   end
@@ -41,6 +49,17 @@ event(events.PlaceBlock, function(event)
       "{" ..
       Core.highlight("aqua", tostring(event.x)) ..
       "," .. Core.highlight("aqua", tostring(event.y)) .. "," .. Core.highlight("aqua", tostring(event.z)) .. "}")
+  end
+end)
+
+event(events.RightClick, function(event)
+  if event.hasBlock and AutoLoader.state == "recording" and not (event.blockType == "AIR") then
+    local position = Pos.new(event.blockX, event.blockY, event.blockZ)
+
+    Core.msg(Core.highlight("aqua", "AutoLoader") ..
+      " recorded trigger (" .. event.blockType .. ") used at " .. Pos.toString(position))
+
+    AutoLoader.triggerPosition = position
   end
 end)
 
